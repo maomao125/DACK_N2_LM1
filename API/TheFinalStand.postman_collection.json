@@ -1,0 +1,944 @@
+{
+	"info": {
+		"_postman_id": "e1bde409-b555-41fe-811e-4a19b97bed1d",
+		"name": "The Final Stand",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25633477"
+	},
+	"item": [
+		{
+			"name": "Authorization and Users Querry",
+			"item": [
+				{
+					"name": "Admin's Command",
+					"item": [
+						{
+							"name": "Users List",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful GET request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200,201,]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BaseUrl}}auth/users",
+									"host": [
+										"{{BaseUrl}}auth"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find a User with Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful GET request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200,201,]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BaseUrl}}auth/users/:email",
+									"host": [
+										"{{BaseUrl}}auth"
+									],
+									"path": [
+										"users",
+										":email"
+									],
+									"variable": [
+										{
+											"key": "email",
+											"value": "{{CurrentEmail}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User with email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([204, 401]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BaseUrl}}auth/users/:email",
+									"host": [
+										"{{BaseUrl}}auth"
+									],
+									"path": [
+										"users",
+										":email"
+									],
+									"variable": [
+										{
+											"key": "email",
+											"value": "{{Email}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Take Registed User Info\", function () {\r",
+									"    pm.collectionVariables.set(\"Email\", pm.response.json().data.email);\r",
+									"        pm.collectionVariables.set(\"Lastname\", pm.response.json().data.name);\r",
+									"            pm.collectionVariables.set(\"Firstname\", pm.response.json().data.firstname);\r",
+									"    pm.collectionVariables.set(\"Phone\", pm.response.json().data.phone);\r",
+									"    pm.collectionVariables.set(\"Password\", pm.response.json().data.password);\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"WhyThiss@pronto.me\",\r\n    \"lastname\":\"Who\",\r\n    \"firstname\":\"Know\",\r\n    \"phone\":\"09044444444\",\r\n    \"password\":\"177013\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}register",
+							"host": [
+								"{{BaseUrl}}register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register With Existing Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Take Registed User Info\", function () {\r",
+									"    if(pm.response.json().message == (\"Email already in use!\")){\r",
+									"        \r",
+									"    }else{\r",
+									"        pm.collectionVariables.set(\"Email\", pm.response.json().data.email);\r",
+									"        pm.collectionVariables.set(\"Lastname\", pm.response.json().data.lastname);\r",
+									"            pm.collectionVariables.set(\"Firstname\", pm.response.json().data.firstname);\r",
+									"    pm.collectionVariables.set(\"Phone\", pm.response.json().data.phone);\r",
+									"    pm.collectionVariables.set(\"Password\", pm.response.json().data.password);  \r",
+									"    }\r",
+									"    \r",
+									"});\r",
+									"pm.test(\"Unsuccessful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([401,400,]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"WhyThiss@pronto.me\",\r\n    \"lastname\":\"Who\",\r\n    \"firstname\":\"Know\",\r\n    \"phone\":\"09044444444\",\r\n    \"password\":\"177013\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"set Access Token\", function () {\r",
+									"    pm.collectionVariables.set(\"accessToken\", pm.response.json().data.access_token);\r",
+									"    pm.collectionVariables.set(\"CurrentEmail\", pm.response.json().data.email);\r",
+									"    pm.collectionVariables.set(\"CurrentPassword\", pm.response.json().data.password);\r",
+									"});\r",
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@pronto.me\",\r\n    \"password\":\"177012\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}login",
+							"host": [
+								"{{BaseUrl}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login With Wrong Password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"set Access Token\", function () {\r",
+									"    if(pm.response.json().message == \"Incorrect email or password\"){\r",
+									"\r",
+									"    }else{\r",
+									"        pm.collectionVariables.set(\"accessToken\", pm.response.json().data.access_token);\r",
+									"    }\r",
+									"});\r",
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@gmail.com\",\r\n    \"password\":\"666666\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/login",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Change Password\", function () {\r",
+									"    \r",
+									"    pm.collectionVariables.set(\"Currentpassword\", pm.response.json().data.password);\r",
+									"});\r",
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{CurrentEmail}}\",\r\n    \"oldpassword\": \"{{CurrentPassword}}\",\r\n    \"newpassword\": \"177012\",\r\n    \"newpassword2\": \"177012\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}auth/user/changepassword",
+							"host": [
+								"{{BaseUrl}}auth"
+							],
+							"path": [
+								"user",
+								"changepassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Products List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Random Product ID\", function () {\r",
+									"    const randomID = Math.floor(Math.random() * pm.response.json().length);\r",
+									"\r",
+									"\r",
+									"   pm.collectionVariables.set(\"ProductsID\", pm.response.json()[randomID].id);\r",
+									"    pm.collectionVariables.set(\"ProductsName\", pm.response.json()[randomID].name);\r",
+									"    \r",
+									"});\r",
+									"pm.test(\"Successful GET request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}products",
+							"host": [
+								"{{BaseUrl}}products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find a Product via Name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}products?name={{ProductsName}}",
+							"host": [
+								"{{BaseUrl}}products"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{ProductsName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter the Products list with Type ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}products?category_id=LUX",
+							"host": [
+								"{{BaseUrl}}products"
+							],
+							"query": [
+								{
+									"key": "category_id",
+									"value": "LUX"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Orders List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}auth/orders",
+							"host": [
+								"{{BaseUrl}}auth"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find an Order with ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful GET request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}auth/orders/:id",
+							"host": [
+								"{{BaseUrl}}auth"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit an Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,401, 202]);\r",
+									"    pm.collectionVariables.set(\"order_ID\", pm.response.json().data.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"PId\": \"{{ProductID}}\",\r\n    \"email\": \"{{CurrentEmail}}\",\r\n    \"quantity\": \"110\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}auth/orders",
+							"host": [
+								"{{BaseUrl}}auth"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit an Order (Out of Stock Book))",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,401, 202]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"PId\": \"{{OutofStockProdustsID}}\",\r\n    \"email\": \"{{CurrentEmail}}\",\r\n    \"quantity\": \"110\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}auth/orders",
+							"host": [
+								"{{BaseUrl}}auth"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fix User Name for an Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PATCH request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ASSO@mgial.cao\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}auth/orders/:id",
+							"host": [
+								"{{BaseUrl}}auth"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{order_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful DELETE request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([204]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}auth/orders/:id",
+							"host": [
+								"{{BaseUrl}}auth"
+							],
+							"path": [
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{order_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Email",
+			"value": ""
+		},
+		{
+			"key": "Password",
+			"value": ""
+		},
+		{
+			"key": "Lastname",
+			"value": ""
+		},
+		{
+			"key": "Firstname",
+			"value": ""
+		},
+		{
+			"key": "Phone",
+			"value": ""
+		},
+		{
+			"key": "BaseUrl",
+			"value": "http://localhost:3000/"
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "CurrentEmail",
+			"value": ""
+		},
+		{
+			"key": "CurrentPassword",
+			"value": ""
+		},
+		{
+			"key": "OutofStockProdustsID",
+			"value": ""
+		},
+		{
+			"key": "ProductID",
+			"value": ""
+		},
+		{
+			"key": "ProductsName",
+			"value": ""
+		},
+		{
+			"key": "order_ID",
+			"value": ""
+		},
+		{
+			"key": "Currentpassword",
+			"value": ""
+		},
+		{
+			"key": "ProductsID",
+			"value": ""
+		}
+	]
+}
